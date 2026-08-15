@@ -60,3 +60,39 @@ export async function GET(
     );
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  try {
+    const session = await getCurrentSession();
+    if (!session) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+
+    const pago = await prisma.pago.findUnique({
+      where: { id },
+    });
+
+    if (!pago) {
+      return NextResponse.json(
+        { error: 'Pago no encontrado' },
+        { status: 404 }
+      );
+    }
+
+    await prisma.pago.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error('Error en DELETE /api/pagos/[id]:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}
