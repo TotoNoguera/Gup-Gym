@@ -32,11 +32,11 @@ export default function SocioForm({
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Nombre */}
-        <div>
-          <label htmlFor="nombre" className="block text-sm font-semibold text-gray-700 mb-2">
+        <div className="space-y-3">
+          <label htmlFor="nombre" className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
             Nombre *
           </label>
           <input
@@ -44,17 +44,17 @@ export default function SocioForm({
             type="text"
             id="nombre"
             placeholder="Juan"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:bg-white transition-all"
             disabled={isLoading}
           />
           {errors.nombre && typeof errors.nombre.message === 'string' && (
-            <p className="mt-2 text-sm text-red-600">{errors.nombre.message}</p>
+            <p className="text-xs text-red-600 font-medium">{errors.nombre.message}</p>
           )}
         </div>
 
         {/* Apellido */}
-        <div>
-          <label htmlFor="apellido" className="block text-sm font-semibold text-gray-700 mb-2">
+        <div className="space-y-3">
+          <label htmlFor="apellido" className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
             Apellido *
           </label>
           <input
@@ -62,18 +62,18 @@ export default function SocioForm({
             type="text"
             id="apellido"
             placeholder="Pérez"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:bg-white transition-all"
             disabled={isLoading}
           />
           {errors.apellido && typeof errors.apellido.message === 'string' && (
-            <p className="mt-2 text-sm text-red-600">{errors.apellido.message}</p>
+            <p className="text-xs text-red-600 font-medium">{errors.apellido.message}</p>
           )}
         </div>
       </div>
 
       {/* Email */}
-      <div>
-        <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+      <div className="space-y-3">
+        <label htmlFor="email" className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
           Email *
         </label>
         <input
@@ -81,36 +81,36 @@ export default function SocioForm({
           type="email"
           id="email"
           placeholder="juan@ejemplo.com"
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:bg-white transition-all"
           disabled={isLoading}
         />
         {errors.email && typeof errors.email.message === 'string' && (
-          <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
+          <p className="text-xs text-red-600 font-medium">{errors.email.message}</p>
         )}
       </div>
 
       {/* Teléfono */}
-      <div>
-        <label htmlFor="telefono" className="block text-sm font-semibold text-gray-700 mb-2">
-          Teléfono
+      <div className="space-y-3">
+        <label htmlFor="telefono" className="block text-sm font-bold text-gray-700 uppercase tracking-wide">
+          Teléfono (Opcional)
         </label>
         <input
           {...register('telefono')}
           type="tel"
           id="telefono"
-          placeholder="Ej: 1234567890"
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+          placeholder="Ej: 2245652847"
+          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent focus:bg-white transition-all"
           disabled={isLoading}
         />
         {errors.telefono && typeof errors.telefono.message === 'string' && (
-          <p className="mt-2 text-sm text-red-600">{errors.telefono.message}</p>
+          <p className="text-xs text-red-600 font-medium">{errors.telefono.message}</p>
         )}
       </div>
 
       {/* Error general */}
       {error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-700">{error}</p>
+          <p className="text-sm text-red-700 font-medium">{error}</p>
         </div>
       )}
 
@@ -118,7 +118,7 @@ export default function SocioForm({
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg active:scale-95"
+        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-4 rounded-lg transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? 'Guardando...' : socio ? 'Actualizar Socio' : 'Crear Socio'}
       </button>

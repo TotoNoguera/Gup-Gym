@@ -74,3 +74,11 @@ See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode de
  GET /socios 200 in 57ms (next.js: 14ms, proxy.ts: 4ms, application-code: 39ms)
  GET /api/socios 200 in 1432ms (next.js: 3ms, application-code: 1429ms)
  GET /api/socios 200 in 182ms (next.js: 2ms, application-code: 180ms)
+✓ Compiled in 129ms
+ GET /socios 200 in 44ms (next.js: 4ms, proxy.ts: 3ms, application-code: 36ms)
+ GET /api/socios 200 in 1249ms (next.js: 2ms, application-code: 1247ms)
+ GET /api/socios 200 in 180ms (next.js: 2ms, application-code: 178ms)
+ GET /socios/cmsu2swg10000kctji98l2fet 200 in 1152ms (next.js: 1089ms, proxy.ts: 4ms, application-code: 59ms)
+ GET /api/socios/cmsu2swg10000kctji98l2fet 200 in 3.9s (next.js: 1207ms, application-code: 2.7s)
+ GET /api/socios/cmsu2swg10000kctji98l2fet 200 in 565ms (next.js: 12ms, application-code: 553ms)
+✓ Compiled in 182ms

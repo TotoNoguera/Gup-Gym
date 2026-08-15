@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ArrowLeft, UserPlus } from 'lucide-react';
 import SocioForm from '@/components/socios/SocioForm';
 import { type SocioInput } from '@/lib/schemas';
 
@@ -31,7 +32,6 @@ export default function NuevoSocioPage() {
         return;
       }
 
-      // Socio creado exitosamente, redirigir a socios
       router.push('/socios');
     } catch (err) {
       setError('Error de conexión. Intenta de nuevo.');
@@ -42,13 +42,21 @@ export default function NuevoSocioPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-8 max-w-2xl">
+      {/* Breadcrumb */}
+      <Link href="/socios" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-medium">
+        <ArrowLeft size={20} /> Volver a Socios
+      </Link>
+
       {/* Header */}
-      <div>
-        <Link href="/socios" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-          ← Volver a Socios
-        </Link>
-        <h2 className="mt-4 text-3xl font-bold text-gray-900">Crear Nuevo Socio</h2>
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-orange-100 rounded-xl">
+            <UserPlus size={28} className="text-orange-600" />
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900">Nuevo Socio</h1>
+        </div>
+        <p className="text-gray-600 font-medium">Registra un nuevo miembro en GUP Gym</p>
       </div>
 
       {/* Form */}
