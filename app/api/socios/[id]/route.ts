@@ -123,6 +123,56 @@ export async function PATCH(
   }
 }
 
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  try {
+    // Verificar autenticación
+    const session = await getCurrentSession();
+    if (!session) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { activo } = body;
+
+    if (typeof activo !== 'boolean') {
+      return NextResponse.json(
+        { error: 'El campo activo debe ser un booleano' },
+        { status: 400 }
+      );
+    }
+
+    // Verificar que el socio existe
+    const existingSocio = await prisma.socio.findUnique({
+      where: { id },
+    });
+
+    if (!existingSocio) {
+      return NextResponse.json(
+        { error: 'Socio no encontrado' },
+        { status: 404 }
+      );
+    }
+
+    // Actualizar estado sin eliminar datos
+    const updatedSocio = await prisma.socio.update({
+      where: { id },
+      data: { activo },
+    });
+
+    return NextResponse.json(updatedSocio, { status: 200 });
+  } catch (error) {
+    console.error('Error en PUT /api/socios/[id]:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

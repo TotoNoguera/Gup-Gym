@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       return new Date(a.fechaVencimiento).getTime() - new Date(b.fechaVencimiento).getTime();
     });
 
-    // Ingresos del mes
+    // Ingresos del mes e ingresos de hoy
     const primerDiaMes = startOfMonth(hoy);
     const ultimoDiaMes = endOfMonth(hoy);
 
@@ -77,6 +77,23 @@ export async function GET(request: NextRequest) {
     });
 
     const ingresosDelMes = pagosDelMes.reduce((sum, pago) => {
+      return sum + Number(pago.monto);
+    }, 0);
+
+    // Ingresos de hoy
+    const hoyFin = new Date(hoy);
+    hoyFin.setHours(23, 59, 59, 999);
+
+    const pagosDelDia = await prisma.pago.findMany({
+      where: {
+        fechaPago: {
+          gte: hoy,
+          lte: hoyFin
+        }
+      }
+    });
+
+    const ingresosDelDia = pagosDelDia.reduce((sum, pago) => {
       return sum + Number(pago.monto);
     }, 0);
 
@@ -113,18 +130,11 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       {
-        socios: {
-          total: totalSocios,
-          activos: sociosActivos,
-          inactivos: sociosInactivos
-        },
-        membresias: {
-          activas: membresíasActivas,
-          vencidas: membresíasVencidas
-        },
-        ingresos: {
-          mes: ingresosDelMes
-        },
+        sociosActivos,
+        proxAVencer: membresíasProximasAVencer.length,
+        vencidos: membresíasVencidas,
+        cobradoHoy: ingresosDelDia,
+        cobradoMes: ingresosDelMes,
         proximasAVencer: proximasAVencer.filter(Boolean)
       },
       { status: 200 }

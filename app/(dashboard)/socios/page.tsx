@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, UserPlus } from 'lucide-react';
+import { Search, UserPlus, ToggleLeft, ToggleRight } from 'lucide-react';
 import Avatar from '@/components/shared/Avatar';
 import StatusBadge from '@/components/shared/StatusBadge';
 import { getMembershipStatus, formatDate } from '@/lib/format';
@@ -21,6 +21,7 @@ export default function SociosPage() {
   const [socios, setSocios] = useState<Socio[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSocios = async () => {
@@ -42,6 +43,35 @@ export default function SociosPage() {
     };
     fetchSocios();
   }, [searchTerm]);
+
+  const toggleSocioStatus = async (socioId: string, currentStatus: boolean) => {
+    const action = currentStatus ? 'Desactivar' : 'Activar';
+    if (!confirm(`¿${action} este socio? Se mantiene todo su historial intacto.`)) {
+      return;
+    }
+
+    setTogglingId(socioId);
+    try {
+      const res = await fetch(`/api/socios/${socioId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ activo: !currentStatus }),
+      });
+
+      if (res.ok) {
+        setSocios(socios.map(s =>
+          s.id === socioId ? { ...s, activo: !currentStatus } : s
+        ));
+      } else {
+        console.error('Error al cambiar estado');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+    } finally {
+      setTogglingId(null);
+    }
+  };
 
   return (
     <div className="p-8 space-y-8">
@@ -109,7 +139,19 @@ export default function SociosPage() {
                         <StatusBadge status={status} expirationDate={membresia ? new Date(membresia.fechaVencimiento) : null} />
                       </td>
                       <td className="px-8 py-5 text-sm text-gray-900 font-medium">{membresia ? formatDate(membresia.fechaVencimiento) : '—'}</td>
-                      <td className="px-8 py-5 text-right">
+                      <td className="px-8 py-5 text-right flex items-center justify-end gap-4">
+                        <button
+                          onClick={() => toggleSocioStatus(socio.id, socio.activo)}
+                          disabled={togglingId === socio.id}
+                          className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          title={socio.activo ? 'Desactivar socio' : 'Activar socio'}
+                        >
+                          {socio.activo ? (
+                            <ToggleRight size={18} className="text-green-600 hover:text-green-700" />
+                          ) : (
+                            <ToggleLeft size={18} className="text-gray-400 hover:text-gray-500" />
+                          )}
+                        </button>
                         <Link href={`/socios/${socio.id}`} className="text-orange-600 hover:text-orange-700 font-semibold text-sm">
                           Ver →
                         </Link>
@@ -127,12 +169,11 @@ export default function SociosPage() {
               const membresia = socio.membresias?.[0];
               const status = membresia ? getMembershipStatus(new Date(membresia.fechaVencimiento)) : 'no-membership';
               return (
-                <Link
+                <div
                   key={socio.id}
-                  href={`/socios/${socio.id}`}
-                  className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
+                  className="p-4 bg-gray-50 rounded-lg border border-gray-200"
                 >
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-start gap-4 mb-3">
                     <Avatar nombre={socio.nombre} apellido={socio.apellido} size="md" />
                     <div className="flex-1">
                       <p className="font-semibold text-gray-900">{socio.nombre} {socio.apellido}</p>
@@ -143,7 +184,30 @@ export default function SociosPage() {
                       </div>
                     </div>
                   </div>
-                </Link>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => toggleSocioStatus(socio.id, socio.activo)}
+                      disabled={togglingId === socio.id}
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                      title={socio.activo ? 'Desactivar socio' : 'Activar socio'}
+                    >
+                      {socio.activo ? (
+                        <>
+                          <ToggleRight size={16} className="text-green-600" />
+                          Desactivar
+                        </>
+                      ) : (
+                        <>
+                          <ToggleLeft size={16} className="text-gray-400" />
+                          Activar
+                        </>
+                      )}
+                    </button>
+                    <Link href={`/socios/${socio.id}`} className="flex-1 text-center px-3 py-2 text-orange-600 hover:text-orange-700 font-semibold text-sm rounded-lg hover:bg-gray-100 transition-colors">
+                      Ver
+                    </Link>
+                  </div>
+                </div>
               );
             })}
           </div>
