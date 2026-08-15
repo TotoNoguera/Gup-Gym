@@ -1,0 +1,11 @@
+<svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <!-- GUP Text -->
+  <text x="150" y="70" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#FF7A00" text-anchor="middle" letter-spacing="4">
+    GUP
+  </text>
+
+  <!-- II - GYM - II -->
+  <text x="150" y="105" font-family="Arial, sans-serif" font-size="18" fill="#e8e8e8" text-anchor="middle" letter-spacing="8">
+    II - GYM - II
+  </text>
+</svg>

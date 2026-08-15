@@ -49,11 +49,11 @@ export default function InicioPage() {
   return (
     <div className="space-y-8">
       {/* Bienvenida */}
-      <div>
+      <div className="pb-6 border-b border-gray-200">
         <h1 className="text-4xl font-bold text-gray-900">
-          Así está GUP hoy 💪
+          Así está GUP hoy
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-gray-500 mt-2">
           {format(new Date(), 'EEEE, dd MMMM yyyy', { locale: es })}
         </p>
       </div>

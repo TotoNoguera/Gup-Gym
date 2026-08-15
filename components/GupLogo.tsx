@@ -1,27 +1,47 @@
-import Image from 'next/image';
-
 interface GupLogoProps {
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'white';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-export default function GupLogo({ size = 'md', variant = 'default' }: GupLogoProps) {
+export default function GupLogo({ size = 'md' }: GupLogoProps) {
   const sizes = {
-    sm: { width: 100, height: 100 },
-    md: { width: 150, height: 150 },
-    lg: { width: 200, height: 200 },
+    sm: 'w-16 h-16',
+    md: 'w-24 h-24',
+    lg: 'w-32 h-32',
+    xl: 'w-48 h-48',
   };
 
   return (
-    <div className={`flex items-center justify-center ${variant === 'white' ? 'bg-white rounded-lg p-4' : ''}`}>
-      <Image
-        src="/gup-logo.jpg"
-        alt="GUP Gym"
-        width={sizes[size].width}
-        height={sizes[size].height}
-        priority
-        className="object-contain"
-      />
-    </div>
+    <svg
+      viewBox="0 0 300 120"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMidYMid meet"
+      className={`${sizes[size]}`}
+      alt="GUP Gym"
+    >
+      <text
+        x="150"
+        y="70"
+        fontFamily="Arial, sans-serif"
+        fontSize="72"
+        fontWeight="bold"
+        fill="#FF7A00"
+        textAnchor="middle"
+        letterSpacing="4"
+      >
+        GUP
+      </text>
+
+      <text
+        x="150"
+        y="105"
+        fontFamily="Arial, sans-serif"
+        fontSize="18"
+        fill="#e8e8e8"
+        textAnchor="middle"
+        letterSpacing="8"
+      >
+        II - GYM - II
+      </text>
+    </svg>
   );
 }

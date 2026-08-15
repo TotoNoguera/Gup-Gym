@@ -3,6 +3,7 @@
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { Home, Users, CreditCard, LogOut } from 'lucide-react';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -41,10 +42,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
-      <nav className="bg-gray-900 shadow-lg border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
-          <div className="h-12 w-12">
-            <img src="/gup-logo.jpg" alt="GUP" className="h-full w-full object-contain" />
+      <nav className="bg-gray-900 shadow-md border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="w-32 h-12">
+            <svg
+              viewBox="0 0 300 120"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="xMidYMid meet"
+              className="w-full h-full"
+            >
+              <text x="150" y="70" fontFamily="Arial, sans-serif" fontSize="72" fontWeight="bold" fill="#FF7A00" textAnchor="middle" letterSpacing="4">GUP</text>
+              <text x="150" y="105" fontFamily="Arial, sans-serif" fontSize="18" fill="#e8e8e8" textAnchor="middle" letterSpacing="8">II - GYM - II</text>
+            </svg>
           </div>
           <button
             onClick={handleLogout}
@@ -58,37 +67,40 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Sidebar + Main Content */}
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-gray-900 shadow-lg border-r border-gray-800 min-h-screen">
-          <nav className="px-4 py-8 space-y-2">
+        <aside className="w-64 bg-gray-900 shadow-lg border-r border-gray-800 min-h-screen flex flex-col">
+          <nav className="px-3 py-8 space-y-1 flex-1">
             <Link
               href="/inicio"
-              className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
                 isActive('/inicio')
                   ? 'bg-orange-600/20 text-orange-400 border-l-2 border-orange-500'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800'
               }`}
             >
-              🏠 Inicio
+              <Home size={20} />
+              <span>Inicio</span>
             </Link>
             <Link
               href="/socios"
-              className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
                 isActive('/socios') || pathname.startsWith('/socios/')
                   ? 'bg-orange-600/20 text-orange-400 border-l-2 border-orange-500'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800'
               }`}
             >
-              👥 Socios
+              <Users size={20} />
+              <span>Socios</span>
             </Link>
             <Link
               href="/pagos"
-              className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
                 isActive('/pagos') || pathname.startsWith('/pagos/')
                   ? 'bg-orange-600/20 text-orange-400 border-l-2 border-orange-500'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800'
               }`}
             >
-              💳 Pagos
+              <CreditCard size={20} />
+              <span>Pagos</span>
             </Link>
           </nav>
         </aside>
