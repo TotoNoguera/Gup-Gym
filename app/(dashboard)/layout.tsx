@@ -41,14 +41,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
-      <nav className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-lg border-b border-orange-500/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🏋️</span>
-            <div>
-              <h1 className="text-xl font-bold text-white">GUP</h1>
-              <p className="text-xs text-orange-400">GYM</p>
-            </div>
+      <nav className="bg-gray-900 shadow-lg border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+          <div className="h-12 w-12">
+            <img src="/gup-logo.jpg" alt="GUP" className="h-full w-full object-contain" />
           </div>
           <button
             onClick={handleLogout}
@@ -65,14 +61,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <aside className="w-64 bg-gray-900 shadow-lg border-r border-gray-800 min-h-screen">
           <nav className="px-4 py-8 space-y-2">
             <Link
-              href="/"
+              href="/inicio"
               className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
-                isActive('/')
+                isActive('/inicio')
                   ? 'bg-orange-600/20 text-orange-400 border-l-2 border-orange-500'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800'
               }`}
             >
-              📊 Dashboard
+              🏠 Inicio
             </Link>
             <Link
               href="/socios"

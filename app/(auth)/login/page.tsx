@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import GupLogo from '@/components/GupLogo';
 import LoginForm from '@/components/auth/LoginForm';
 
 export default function LoginPage() {
@@ -16,9 +17,7 @@ export default function LoginPage() {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
@@ -28,7 +27,6 @@ export default function LoginPage() {
         return;
       }
 
-      // Login exitoso, redirigir al dashboard
       router.push('/');
     } catch (err) {
       setError('Error de conexión. Intenta de nuevo.');
@@ -39,14 +37,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Logo y Branding */}
+    <div className="space-y-10">
+      {/* Logo */}
+      <div className="flex justify-center">
+        <GupLogo size="lg" />
+      </div>
+
+      {/* Tagline */}
       <div className="text-center">
-        <div className="mb-6 text-6xl">🏋️</div>
-        <h1 className="text-4xl font-bold text-white">GUP</h1>
-        <p className="text-xl text-orange-400 font-semibold mt-1">GYM</p>
-        <p className="mt-4 text-sm text-gray-300">
-          Sistema de Administración Profesional
+        <p className="text-sm text-gray-300 uppercase tracking-widest">
+          Sistema de Gestión de Socios
         </p>
       </div>
 
@@ -56,7 +56,7 @@ export default function LoginPage() {
       {/* Footer */}
       <div className="text-center">
         <p className="text-xs text-gray-500">
-          GUP Gym © 2024 - Todos los derechos reservados
+          GUP Gym © 2024
         </p>
       </div>
     </div>
