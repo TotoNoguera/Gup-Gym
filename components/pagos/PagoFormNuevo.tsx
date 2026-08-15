@@ -32,7 +32,7 @@ export default function PagoFormNuevo({
   const [socioId, setSocioId] = useState(initialSocioId || '');
   const [meses, setMeses] = useState(1);
   const [importe, setImporte] = useState(PRECIO_MENSUAL);
-  const [fechaPago, setFechaPago] = useState(formatDate(new Date()));
+  const [fechaPago, setFechaPago] = useState(new Date().toISOString().split('T')[0]);
   const [metodo, setMetodo] = useState<'EFECTIVO' | 'TARJETA' | 'TRANSFERENCIA'>('EFECTIVO');
   const [showConfirm, setShowConfirm] = useState(false);
 

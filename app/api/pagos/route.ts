@@ -83,33 +83,58 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     const validatedData = pagoSchema.parse(body);
-    const { membresiaId, monto, fechaPago, metodo } = validatedData;
+    const { socioId, meses, importe, fechaPago, metodo } = validatedData;
 
-    const membresia = await prisma.membresia.findUnique({
-      where: { id: membresiaId },
-      include: { socio: true },
+    const socio = await prisma.socio.findUnique({ where: { id: socioId } });
+    if (!socio) {
+      return NextResponse.json({ error: 'Socio no encontrado' }, { status: 400 });
+    }
+
+    if (!socio.activo) {
+      return NextResponse.json({ error: 'El socio está inactivo' }, { status: 400 });
+    }
+
+    let membresia = await prisma.membresia.findFirst({
+      where: { socioId },
     });
 
-    if (!membresia) {
-      return NextResponse.json(
-        { error: 'Membresía no encontrada' },
-        { status: 400 }
-      );
-    }
-
-    if (!membresia.socio.activo) {
-      return NextResponse.json(
-        { error: 'El socio de esta membresía está inactivo' },
-        { status: 400 }
-      );
-    }
-
     const fechaPagoDate = new Date(fechaPago);
+    const newExpirationDate = new Date(fechaPagoDate);
+    newExpirationDate.setMonth(newExpirationDate.getMonth() + meses);
+
+    if (!membresia) {
+      let plan = await prisma.plan.findFirst({ where: { activo: true } });
+      if (!plan) {
+        plan = await prisma.plan.create({
+          data: {
+            nombre: 'Plan Estándar',
+            precio: importe,
+            duracionMeses: meses,
+          },
+        });
+      }
+
+      membresia = await prisma.membresia.create({
+        data: {
+          socioId,
+          planId: plan.id,
+          fechaInicio: fechaPagoDate,
+          fechaVencimiento: newExpirationDate,
+        },
+      });
+    } else {
+      await prisma.membresia.update({
+        where: { id: membresia.id },
+        data: {
+          fechaVencimiento: newExpirationDate,
+        },
+      });
+    }
 
     const pago = await prisma.pago.create({
       data: {
-        membresiaId,
-        monto,
+        membresiaId: membresia.id,
+        monto: importe,
         fechaPago: fechaPagoDate,
         metodo,
       },

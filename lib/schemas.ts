@@ -94,14 +94,19 @@ export const membresiaSchema = z.object({
 export type MembresiaInput = z.infer<typeof membresiaSchema>;
 
 export const pagoSchema = z.object({
-  membresiaId: z
+  socioId: z
     .string()
-    .min(1, 'La membresía es requerida'),
-  monto: z
+    .min(1, 'El socio es requerido'),
+  meses: z
+    .string()
+    .or(z.number())
+    .transform(val => typeof val === 'string' ? parseInt(val, 10) : val)
+    .refine(val => Number.isInteger(val) && val > 0 && val <= 12, 'Los meses deben estar entre 1 y 12'),
+  importe: z
     .string()
     .or(z.number())
     .transform(val => typeof val === 'string' ? parseFloat(val) : val)
-    .refine(val => val > 0, 'El monto debe ser mayor que 0'),
+    .refine(val => val > 0, 'El importe debe ser mayor que 0'),
   fechaPago: z
     .string()
     .min(1, 'La fecha de pago es requerida')

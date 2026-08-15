@@ -1,14 +1,17 @@
-import { Decimal } from '@prisma/client/runtime/library';
+import { Prisma } from '@prisma/client';
 import { format, addMonths } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 // Convertir Decimal a número de forma segura
 export const decimalToNumber = (value: unknown): number => {
-  if (value instanceof Decimal) {
-    return Number(value.toString());
+  if (value && typeof value === 'object' && 'toFixed' in value) {
+    return Number((value as any).toFixed());
   }
   if (typeof value === 'string') {
     return Number(value);
+  }
+  if (typeof value === 'number') {
+    return value;
   }
   return Number(value) || 0;
 };

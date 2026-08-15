@@ -16,7 +16,6 @@ export default function GupLogo({ size = 'md' }: GupLogoProps) {
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
       className={`${sizes[size]}`}
-      alt="GUP Gym"
     >
       <text
         x="150"

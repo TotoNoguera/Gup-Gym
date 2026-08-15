@@ -9,7 +9,7 @@ import { Users, AlertCircle, TrendingUp, DollarSign, Calendar } from 'lucide-rea
 
 interface Membresia {
   id: string;
-  socio: { nombre: string; apellido: string };
+  socio: { id: string; nombre: string; apellido: string };
   fechaVencimiento: string;
 }
 
@@ -148,7 +148,7 @@ export default function InicioPage() {
           + Nuevo Socio
         </Link>
         <Link href="/pagos/nuevo" className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all">
-          💳 Registrar Pago
+          Registrar Pago
         </Link>
       </div>
     </div>
