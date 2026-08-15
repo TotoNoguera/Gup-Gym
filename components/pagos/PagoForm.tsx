@@ -118,7 +118,7 @@ export default function PagoForm({
         />
         {selectedMembresia && (
           <p className="mt-1 text-xs text-gray-500">
-            Precio del plan: ${selectedMembresia.plan.precio.toFixed(2)}
+            Precio del plan: ${Number(selectedMembresia.plan.precio).toFixed(2)}
           </p>
         )}
       </div>

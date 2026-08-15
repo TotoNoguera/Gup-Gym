@@ -15,3 +15,46 @@
 
   Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
 
+ GET /inicio 200 in 623ms (next.js: 255ms, proxy.ts: 102ms, application-code: 266ms)
+(node:20400) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+
+To prepare for this change:
+- If you want the current behavior, explicitly use 'sslmode=verify-full'
+- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+
+See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ GET /api/dashboard 200 in 5.3s (next.js: 97ms, application-code: 5.2s)
+ GET /api/dashboard 200 in 885ms (next.js: 3ms, application-code: 882ms)
+ GET / 307 in 136ms (next.js: 46ms, proxy.ts: 7ms, application-code: 83ms)
+ GET /inicio 200 in 65ms (next.js: 11ms, proxy.ts: 7ms, application-code: 47ms)
+ GET /api/dashboard 200 in 3.0s (next.js: 3ms, application-code: 3.0s)
+ GET /api/dashboard 200 in 924ms (next.js: 3ms, application-code: 921ms)
+ GET /inicio 200 in 96ms (next.js: 7ms, proxy.ts: 6ms, application-code: 84ms)
+ GET /api/dashboard 200 in 3.0s (next.js: 14ms, application-code: 3.0s)
+ GET /api/dashboard 200 in 910ms (next.js: 3ms, application-code: 907ms)
+ GET /pagos 200 in 742ms (next.js: 705ms, proxy.ts: 6ms, application-code: 31ms)
+ GET /socios 200 in 333ms (next.js: 301ms, proxy.ts: 5ms, application-code: 27ms)
+ GET /api/pagos?metodo=TARJETA 200 in 1679ms (next.js: 3ms, application-code: 1676ms)
+ GET /api/pagos?metodo=EFECTIVO 200 in 2.7s (next.js: 14ms, application-code: 2.7s)
+ GET /api/pagos? 200 in 4.1s (next.js: 1284ms, application-code: 2.8s)
+ GET /api/pagos? 200 in 530ms (next.js: 1.9ms, application-code: 529ms)
+ GET /api/socios 200 in 1595ms (next.js: 326ms, application-code: 1269ms)
+ GET /api/socios 200 in 183ms (next.js: 2ms, application-code: 181ms)
+ GET /pagos 200 in 40ms (next.js: 15ms, proxy.ts: 4ms, application-code: 21ms)
+ GET /api/pagos? 200 in 585ms (next.js: 41ms, application-code: 545ms)
+ GET /api/pagos? 200 in 533ms (next.js: 2ms, application-code: 531ms)
+ GET /pagos/nuevo 200 in 591ms (next.js: 552ms, proxy.ts: 7ms, application-code: 31ms)
+ GET /api/membresias?filtro=todas 200 in 2.8s (next.js: 311ms, application-code: 2.5s)
+ GET /api/membresias?filtro=todas 200 in 378ms (next.js: 3ms, application-code: 375ms)
+[browser] Uncaught TypeError: selectedMembresia.plan.precio.toFixed is not a function
+    at PagoForm (components/pagos/PagoForm.tsx:121:62)
+    at NuevoPagoPage (app/(dashboard)/pagos/nuevo/page.tsx:61:7)
+  119 |         {selectedMembresia && (
+  120 |           <p className="mt-1 text-xs text-gray-500">
+> 121 |             Precio del plan: ${selectedMembresia.plan.precio.toFixed(2)}
+      |                                                              ^
+  122 |           </p>
+  123 |         )}
+  124 |       </div>
