@@ -1,68 +1,69 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useSearchParams } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import PagoForm from '@/components/pagos/PagoForm';
+import { ArrowLeft, CreditCard } from 'lucide-react';
+import PagoFormNuevo from '@/components/pagos/PagoFormNuevo';
 
-export default function NuevoPagoPage() {
+export default function RegistrarPagoPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const membresiaId = searchParams.get('membresiaId');
-
-  const [isLoading, setIsLoading] = useState(false);
+  const socioId = searchParams.get('socioId') || undefined;
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (data: any) => {
-    try {
-      setIsLoading(true);
-      setError(null);
+    setIsLoading(true);
+    setError(null);
 
-      const response = await fetch('/api/pagos', {
+    try {
+      const res = await fetch('/api/pagos', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
         credentials: 'include',
-        body: JSON.stringify({
-          membresiaId: data.membresiaId,
-          monto: data.monto,
-          fechaPago: data.fechaPago,
-          metodo: data.metodo,
-        }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Error al registrar pago');
+      if (!res.ok) {
+        const err = await res.json();
+        setError(err.error || 'Error al registrar pago');
+        return;
       }
 
-      const createdPago = await response.json();
-      router.push(`/pagos/${createdPago.id}`);
+      router.push(`/socios/${data.socioId}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
+      setError('Error de conexión');
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Registrar Pago</h1>
-        <Link
-          href="/pagos"
-          className="text-orange-600 hover:text-orange-700 font-medium"
-        >
-          ← Volver
-        </Link>
+    <div className="p-8 space-y-8">
+      {/* Breadcrumb */}
+      <Link href="/pagos" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-medium">
+        <ArrowLeft size={20} /> Volver a Pagos
+      </Link>
+
+      {/* Header */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-orange-100 rounded-xl">
+            <CreditCard size={28} className="text-orange-600" />
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900">Registrar Pago</h1>
+        </div>
+        <p className="text-gray-600 font-medium">Crea un nuevo registro de pago para un socio</p>
       </div>
 
-      <PagoForm
+      {/* Formulario */}
+      <PagoFormNuevo
+        socioId={socioId}
         onSubmit={handleSubmit}
         isLoading={isLoading}
         error={error}
-        initialMembresiaId={membresiaId || undefined}
       />
     </div>
   );

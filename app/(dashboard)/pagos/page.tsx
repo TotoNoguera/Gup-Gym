@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import PagosTable from '@/components/pagos/PagosTable';
+import { CreditCard, DollarSign, TrendingUp, Plus } from 'lucide-react';
+import { formatCurrency, formatDate, decimalToNumber } from '@/lib/format';
 
 interface Pago {
   id: string;
