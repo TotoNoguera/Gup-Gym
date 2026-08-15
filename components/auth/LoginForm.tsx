@@ -29,11 +29,11 @@ export default function LoginForm({
       onSubmit={handleSubmit(async (data) => {
         await onSubmit(data.email, data.password);
       })}
-      className="space-y-6 bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-2xl shadow-2xl"
+      className="space-y-8 bg-white/10 backdrop-blur-md border border-white/15 p-10 rounded-2xl shadow-2xl"
     >
       {/* Email */}
-      <div>
-        <label htmlFor="email" className="block text-sm font-semibold text-white mb-2">
+      <div className="space-y-2">
+        <label htmlFor="email" className="block text-sm font-semibold text-white">
           Email
         </label>
         <input
@@ -45,13 +45,13 @@ export default function LoginForm({
           disabled={isLoading}
         />
         {errors.email && (
-          <p className="mt-2 text-sm text-orange-300">{errors.email.message}</p>
+          <p className="text-xs text-orange-300 font-medium">{errors.email.message}</p>
         )}
       </div>
 
       {/* Contraseña */}
-      <div>
-        <label htmlFor="password" className="block text-sm font-semibold text-white mb-2">
+      <div className="space-y-2">
+        <label htmlFor="password" className="block text-sm font-semibold text-white">
           Contraseña
         </label>
         <input
@@ -63,14 +63,14 @@ export default function LoginForm({
           disabled={isLoading}
         />
         {errors.password && (
-          <p className="mt-2 text-sm text-orange-300">{errors.password.message}</p>
+          <p className="text-xs text-orange-300 font-medium">{errors.password.message}</p>
         )}
       </div>
 
       {/* Error General */}
       {error && (
         <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg">
-          <p className="text-sm text-red-300">{error}</p>
+          <p className="text-sm text-red-200 font-medium">{error}</p>
         </div>
       )}
 
@@ -78,7 +78,7 @@ export default function LoginForm({
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-orange-500/50"
+        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-orange-500/50 active:scale-95"
       >
         {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
       </button>

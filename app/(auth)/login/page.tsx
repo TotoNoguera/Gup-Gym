@@ -37,26 +37,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="space-y-10">
-      {/* Logo */}
-      <div className="flex justify-center">
-        <GupLogo size="lg" />
-      </div>
+    <div className="space-y-12">
+      {/* Header */}
+      <div className="space-y-6 text-center">
+        <div className="flex justify-center">
+          <GupLogo size="lg" />
+        </div>
 
-      {/* Tagline */}
-      <div className="text-center">
-        <p className="text-sm text-gray-300 uppercase tracking-widest">
-          Sistema de Gestión de Socios
-        </p>
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold text-white">GUP GYM</h1>
+          <p className="text-sm text-gray-300 font-medium">
+            Sistema de Gestión de Socios
+          </p>
+        </div>
       </div>
 
       {/* Formulario */}
       <LoginForm onSubmit={handleLogin} isLoading={isLoading} error={error} />
 
       {/* Footer */}
-      <div className="text-center">
-        <p className="text-xs text-gray-500">
-          GUP Gym © 2024
+      <div className="text-center pt-2">
+        <p className="text-xs text-gray-500 font-medium">
+          GUP Gym © 2026
         </p>
       </div>
     </div>
