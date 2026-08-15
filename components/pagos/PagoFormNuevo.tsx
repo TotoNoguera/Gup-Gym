@@ -32,12 +32,19 @@ export default function PagoFormNuevo({
   const [socioId, setSocioId] = useState(initialSocioId || '');
   const [meses, setMeses] = useState(1);
   const [importe, setImporte] = useState(PRECIO_MENSUAL);
+  const [importeManualizado, setImporteManualizado] = useState(false);
   const [fechaPago, setFechaPago] = useState(new Date().toISOString().split('T')[0]);
   const [metodo, setMetodo] = useState<'EFECTIVO' | 'TARJETA' | 'TRANSFERENCIA'>('EFECTIVO');
   const [showConfirm, setShowConfirm] = useState(false);
 
   const selectedSocio = socios.find((s) => s.id === socioId);
   const totalImporte = PRECIO_MENSUAL * meses;
+
+  useEffect(() => {
+    if (!importeManualizado) {
+      setImporte(totalImporte);
+    }
+  }, [meses, importeManualizado, totalImporte]);
 
   useEffect(() => {
     const fetch_ = async () => {
@@ -185,7 +192,10 @@ export default function PagoFormNuevo({
           <input
             type="number"
             value={importe}
-            onChange={(e) => setImporte(Number(e.target.value))}
+            onChange={(e) => {
+              setImporte(Number(e.target.value));
+              setImporteManualizado(Number(e.target.value) !== totalImporte);
+            }}
             disabled={isLoading}
             className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
           />

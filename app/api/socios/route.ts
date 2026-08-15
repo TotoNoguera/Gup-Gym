@@ -55,6 +55,11 @@ export async function GET(request: NextRequest) {
         activo: true,
         ...where,
       },
+      include: {
+        membresias: {
+          orderBy: { fechaVencimiento: 'desc' },
+        },
+      },
       orderBy: { createdAt: 'desc' },
     });
 
