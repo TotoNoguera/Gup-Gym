@@ -85,26 +85,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               👥 Socios
             </Link>
             <Link
-              href="/planes"
-              className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
-                isActive('/planes') || pathname.startsWith('/planes/')
-                  ? 'bg-orange-600/20 text-orange-400 border-l-2 border-orange-500'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800'
-              }`}
-            >
-              📋 Planes
-            </Link>
-            <Link
-              href="/membresias"
-              className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
-                isActive('/membresias') || pathname.startsWith('/membresias/')
-                  ? 'bg-orange-600/20 text-orange-400 border-l-2 border-orange-500'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800'
-              }`}
-            >
-              🏋️ Membresías
-            </Link>
-            <Link
               href="/pagos"
               className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
                 isActive('/pagos') || pathname.startsWith('/pagos/')
