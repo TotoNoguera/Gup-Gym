@@ -1,0 +1,104 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Administrador del gimnasio
+model Admin {
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String   // Hasheada con bcrypt
+  nombre   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Socio del gimnasio
+model Socio {
+  id          String   @id @default(cuid())
+  nombre      String
+  apellido    String   @default("")
+  email       String   @unique
+  telefono    String?
+  fechaRegistro DateTime @default(now())
+  activo      Boolean  @default(true)
+
+  // Relaciones
+  membresias  Membresia[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email])
+}
+
+// Plan de membresía
+model Plan {
+  id        String   @id @default(cuid())
+  nombre    String   @unique
+  precio    Decimal  @db.Decimal(10, 2)
+  duracionMeses Int
+  activo    Boolean  @default(true)
+
+  // Relaciones
+  membresias Membresia[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Membresía de un socio
+model Membresia {
+  id           String   @id @default(cuid())
+
+  // Relaciones
+  socioId      String
+  socio        Socio    @relation(fields: [socioId], references: [id], onDelete: Restrict)
+
+  planId       String
+  plan         Plan     @relation(fields: [planId], references: [id], onDelete: Restrict)
+
+  // Fechas
+  fechaInicio  DateTime
+  fechaVencimiento DateTime
+
+  // Relaciones
+  pagos        Pago[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([socioId])
+  @@index([planId])
+  @@index([fechaVencimiento])
+}
+
+// Métodos de pago
+enum MetodoPago {
+  EFECTIVO
+  TARJETA
+  TRANSFERENCIA
+}
+
+// Registro de pago
+model Pago {
+  id           String   @id @default(cuid())
+
+  // Relaciones
+  membresiaId  String
+  membresia    Membresia @relation(fields: [membresiaId], references: [id], onDelete: Cascade)
+
+  // Datos del pago
+  monto        Decimal  @db.Decimal(10, 2)
+  fechaPago    DateTime @default(now())
+  metodo       MetodoPago
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([membresiaId])
+  @@index([fechaPago])
+}
