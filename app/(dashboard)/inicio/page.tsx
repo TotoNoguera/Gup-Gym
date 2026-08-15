@@ -2,34 +2,38 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { format, differenceInDays } from 'date-fns';
-import { es } from 'date-fns/locale';
-import { Users, TrendingUp, AlertCircle, Clock } from 'lucide-react';
+import { formatCurrency, formatDate, getMembershipStatus } from '@/lib/format';
+import Avatar from '@/components/shared/Avatar';
+import StatusBadge from '@/components/shared/StatusBadge';
+import { Users, AlertCircle, TrendingUp, DollarSign, Calendar } from 'lucide-react';
 
-interface DashboardData {
-  socios: { total: number; activos: number; inactivos: number };
-  membresias: { activas: number; vencidas: number };
-  ingresos: { mes: number };
-  proximasAVencer: Array<{
-    id: string;
-    socio: string;
-    plan: string;
-    fechaVencimiento: string;
-    diasRestantes: number;
-  }>;
+interface Membresia {
+  id: string;
+  socio: { nombre: string; apellido: string };
+  fechaVencimiento: string;
+}
+
+interface KPI {
+  sociosActivos: number;
+  proxAVencer: number;
+  vencidos: number;
+  cobradoHoy: number;
+  cobradoMes: number;
 }
 
 export default function InicioPage() {
-  const [data, setData] = useState<DashboardData | null>(null);
+  const [kpis, setKpis] = useState<KPI | null>(null);
+  const [proximos, setProximos] = useState<Membresia[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/dashboard', { credentials: 'include' });
-        if (response.ok) {
-          const dashboardData = await response.json();
-          setData(dashboardData);
+        const res = await fetch('/api/dashboard', { credentials: 'include' });
+        if (res.ok) {
+          const data = await res.json();
+          setKpis(data);
+          setProximos(data.proximasAVencer || []);
         }
       } catch (err) {
         console.error('Error:', err);
@@ -37,125 +41,115 @@ export default function InicioPage() {
         setIsLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
   if (isLoading) {
-    return <div className="text-center py-20">Cargando...</div>;
+    return <div className="p-8 text-center text-gray-600">Cargando...</div>;
   }
 
-  if (!data) return null;
+  if (!kpis) return null;
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 p-8">
       {/* Header */}
-      <div className="space-y-1">
-        <h1 className="text-5xl font-bold text-gray-900 tracking-tight">
-          Así está GUP hoy
-        </h1>
-        <p className="text-base text-gray-500 font-medium">
-          {format(new Date(), 'EEEE, dd MMMM yyyy', { locale: es })}
-        </p>
+      <div>
+        <h1 className="text-5xl font-bold text-gray-900">Así está GUP hoy</h1>
+        <p className="text-gray-600 mt-2 font-medium">{formatDate(new Date(), 'long')}</p>
       </div>
 
       {/* KPIs Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Socios Card */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 group">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Socios</p>
-            </div>
-            <div className="p-3 bg-orange-100/50 rounded-xl group-hover:bg-orange-100 transition-colors">
-              <Users size={24} className="text-orange-600" />
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        {/* Socios Activos */}
+        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Socios Activos</span>
+            <Users size={24} className="text-blue-500" />
           </div>
-          <div>
-            <p className="text-5xl font-bold text-gray-900">{data.socios.total}</p>
-            <p className="text-sm text-gray-500 mt-3 font-medium">{data.socios.activos} activos • {data.socios.inactivos} inactivos</p>
-          </div>
+          <p className="text-4xl font-bold text-gray-900">{kpis.sociosActivos}</p>
         </div>
 
-        {/* Al Día Card */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 group">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Al Día</p>
-            </div>
-            <div className="p-3 bg-green-100/50 rounded-xl group-hover:bg-green-100 transition-colors">
-              <TrendingUp size={24} className="text-green-600" />
-            </div>
+        {/* Próximos a Vencer */}
+        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Próximos 7 días</span>
+            <AlertCircle size={24} className="text-orange-500" />
           </div>
-          <div>
-            <p className="text-5xl font-bold text-gray-900">{data.membresias.activas}</p>
-            <p className="text-sm text-gray-500 mt-3 font-medium">membresías activas</p>
-          </div>
+          <p className="text-4xl font-bold text-gray-900">{kpis.proxAVencer}</p>
         </div>
 
-        {/* Vencen Pronto Card */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 group">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Vencen Pronto</p>
-            </div>
-            <div className="p-3 bg-orange-100/50 rounded-xl group-hover:bg-orange-100 transition-colors">
-              <AlertCircle size={24} className="text-orange-600" />
-            </div>
+        {/* Vencidos */}
+        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Vencidos</span>
+            <Calendar size={24} className="text-red-500" />
           </div>
-          <div>
-            <p className="text-5xl font-bold text-gray-900">{data.membresias.vencidas}</p>
-            <p className="text-sm text-gray-500 mt-3 font-medium">próximos 7 días</p>
+          <p className="text-4xl font-bold text-gray-900">{kpis.vencidos}</p>
+        </div>
+
+        {/* Cobrado Hoy */}
+        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Hoy</span>
+            <TrendingUp size={24} className="text-green-500" />
           </div>
+          <p className="text-2xl font-bold text-gray-900">{formatCurrency(kpis.cobradoHoy)}</p>
+        </div>
+
+        {/* Cobrado Este Mes */}
+        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Este mes</span>
+            <DollarSign size={24} className="text-purple-500" />
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{formatCurrency(kpis.cobradoMes)}</p>
         </div>
       </div>
 
       {/* Próximos Vencimientos */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-8 py-6 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <Clock size={24} className="text-gray-400" />
-            <h2 className="text-2xl font-bold text-gray-900">Próximos Vencimientos</h2>
-          </div>
+        <div className="px-8 py-6 border-b border-gray-200 flex items-center gap-3">
+          <Calendar size={24} className="text-gray-400" />
+          <h2 className="text-2xl font-bold text-gray-900">Próximos Vencimientos</h2>
         </div>
 
-        {data.proximasAVencer.length === 0 ? (
+        {proximos.length === 0 ? (
           <div className="p-16 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100/50 mb-4">
-              <TrendingUp size={32} className="text-green-600" />
-            </div>
+            <TrendingUp size={48} className="mx-auto mb-4 text-green-500 opacity-50" />
             <p className="text-lg font-semibold text-gray-900">Todo al día</p>
-            <p className="text-sm text-gray-500 mt-2">No hay socios próximos a vencer.</p>
+            <p className="text-sm text-gray-600 mt-2">No hay socios próximos a vencer</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {data.proximasAVencer.map((membresia) => (
-              <div key={membresia.id} className="px-8 py-6 hover:bg-gray-50 transition-colors flex items-center justify-between gap-6">
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-900 truncate">{membresia.socio}</p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Vence: {format(new Date(membresia.fechaVencimiento), 'dd MMM yyyy', { locale: es })}
-                  </p>
+            {proximos.map((m) => (
+              <Link
+                key={m.id}
+                href={`/socios/${m.socio.id}`}
+                className="px-8 py-5 hover:bg-gray-50/50 transition-colors flex items-center justify-between gap-4 group"
+              >
+                <div className="flex items-center gap-4 flex-1">
+                  <Avatar nombre={m.socio.nombre} apellido={m.socio.apellido} size="md" />
+                  <div>
+                    <p className="font-semibold text-gray-900">{m.socio.nombre} {m.socio.apellido}</p>
+                    <p className="text-sm text-gray-600">Vence {formatDate(m.fechaVencimiento)}</p>
+                  </div>
                 </div>
-                <div className="flex-shrink-0">
-                  <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-bold ${
-                    membresia.diasRestantes <= 0 ? 'bg-red-100 text-red-700' :
-                    membresia.diasRestantes <= 3 ? 'bg-orange-100 text-orange-700' :
-                    'bg-yellow-100 text-yellow-700'
-                  }`}>
-                    {membresia.diasRestantes <= 0 ? '⚠️ Vencido' : `${membresia.diasRestantes} días`}
-                  </span>
-                </div>
-                <Link
-                  href={`/pagos/nuevo?membresiaId=${membresia.id}`}
-                  className="flex-shrink-0 px-6 py-2.5 bg-orange-600 hover:bg-orange-700 active:scale-95 text-white rounded-lg font-semibold text-sm transition-all shadow-sm hover:shadow-md"
-                >
-                  Registrar Pago
-                </Link>
-              </div>
+                <StatusBadge status={getMembershipStatus(new Date(m.fechaVencimiento))} expirationDate={new Date(m.fechaVencimiento)} />
+                <div className="text-orange-600 group-hover:text-orange-700 font-semibold text-sm">→</div>
+              </Link>
             ))}
           </div>
         )}
+      </div>
+
+      {/* Acciones Rápidas */}
+      <div className="flex gap-4">
+        <Link href="/socios/nuevo" className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-all">
+          + Nuevo Socio
+        </Link>
+        <Link href="/pagos/nuevo" className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all">
+          💳 Registrar Pago
+        </Link>
       </div>
     </div>
   );
