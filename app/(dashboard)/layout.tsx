@@ -40,12 +40,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Desktop + Mobile Navbar */}
       <nav className="bg-gradient-to-r from-gray-950 to-gray-900 border-b border-orange-500/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <div className="w-14 h-14 flex-shrink-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 sm:py-5 flex justify-between items-center">
+          {/* Logo Section */}
+          <div className="flex items-center gap-3 sm:gap-6">
+            <div className="w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0">
               <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" className="w-full h-full">
                 <text x="150" y="70" fontFamily="Arial, sans-serif" fontSize="72" fontWeight="bold" fill="#FF7A00" textAnchor="middle" letterSpacing="4">GUP</text>
                 <text x="150" y="105" fontFamily="Arial, sans-serif" fontSize="18" fill="#e8e8e8" textAnchor="middle" letterSpacing="8">II - GYM - II</text>
@@ -56,20 +57,31 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <p className="text-lg font-semibold text-white">Gestión de socios</p>
             </div>
           </div>
+
+          {/* Desktop Logout Button */}
           <button
             onClick={handleLogout}
-            className="px-6 py-2.5 text-white bg-orange-600 hover:bg-orange-700 rounded-lg font-medium transition-all hover:shadow-lg hover:shadow-orange-500/20 active:scale-95"
+            className="hidden sm:block px-6 py-2.5 text-white bg-orange-600 hover:bg-orange-700 rounded-lg font-medium transition-all hover:shadow-lg hover:shadow-orange-500/20 active:scale-95"
           >
             Cerrar sesión
+          </button>
+
+          {/* Mobile Logout Icon */}
+          <button
+            onClick={handleLogout}
+            className="sm:hidden p-2 text-orange-400 hover:text-orange-300 transition-colors"
+            title="Cerrar sesión"
+          >
+            <LogOut size={20} />
           </button>
         </div>
         <div className="h-px bg-gradient-to-r from-orange-500/0 via-orange-500/50 to-orange-500/0"></div>
       </nav>
 
-      {/* Sidebar + Main Content */}
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-64 bg-gradient-to-b from-gray-950 to-gray-900 shadow-2xl border-r border-gray-800 min-h-screen flex flex-col">
+      {/* Desktop: Sidebar + Main Content */}
+      <div className="hidden sm:flex flex-1">
+        {/* Desktop Sidebar */}
+        <aside className="w-64 bg-gradient-to-b from-gray-950 to-gray-900 shadow-2xl border-r border-gray-800 flex flex-col">
           <nav className="px-4 py-8 space-y-2 flex-1">
             <Link
               href="/inicio"
@@ -106,7 +118,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </Link>
           </nav>
 
-          {/* Logout Button */}
+          {/* Desktop Logout Button in Sidebar */}
           <div className="px-4 py-6 border-t border-gray-700/50">
             <button
               onClick={handleLogout}
@@ -118,10 +130,57 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8 bg-gradient-to-br from-gray-50 to-gray-100">
+        {/* Desktop Main Content */}
+        <main className="flex-1 px-6 lg:px-8 py-8 bg-gradient-to-br from-gray-50 to-gray-100 overflow-x-hidden">
           {children}
         </main>
+      </div>
+
+      {/* Mobile: Main Content + Bottom Navigation */}
+      <div className="sm:hidden flex flex-col flex-1">
+        {/* Mobile Main Content */}
+        <main className="flex-1 px-4 py-6 pb-24 bg-gradient-to-br from-gray-50 to-gray-100 overflow-x-hidden overflow-y-auto">
+          {children}
+        </main>
+
+        {/* Mobile Bottom Navigation */}
+        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl">
+          <div className="flex justify-around items-stretch">
+            <Link
+              href="/inicio"
+              className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-3 px-2 transition-colors ${
+                isActive('/inicio')
+                  ? 'text-orange-600 bg-orange-50/50'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <Home size={24} className="flex-shrink-0" />
+              <span className="text-xs font-medium">Inicio</span>
+            </Link>
+            <Link
+              href="/socios"
+              className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-3 px-2 transition-colors ${
+                isActive('/socios') || pathname.startsWith('/socios/')
+                  ? 'text-orange-600 bg-orange-50/50'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <Users size={24} className="flex-shrink-0" />
+              <span className="text-xs font-medium">Socios</span>
+            </Link>
+            <Link
+              href="/pagos"
+              className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-3 px-2 transition-colors ${
+                isActive('/pagos') || pathname.startsWith('/pagos/')
+                  ? 'text-orange-600 bg-orange-50/50'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <CreditCard size={24} className="flex-shrink-0" />
+              <span className="text-xs font-medium">Pagos</span>
+            </Link>
+          </div>
+        </nav>
       </div>
     </div>
   );

@@ -51,73 +51,73 @@ export default function InicioPage() {
   if (!kpis) return null;
 
   return (
-    <div className="space-y-10 p-8">
+    <div className="space-y-6 sm:space-y-10">
       {/* Header */}
       <div>
-        <h1 className="text-5xl font-bold text-gray-900">Así está GUP hoy</h1>
-        <p className="text-gray-600 mt-2 font-medium">{formatDate(new Date(), 'long')}</p>
+        <h1 className="text-3xl sm:text-5xl font-bold text-gray-900">Así está GUP hoy</h1>
+        <p className="text-gray-600 mt-1 sm:mt-2 font-medium text-sm sm:text-base">{formatDate(new Date(), 'long')}</p>
       </div>
 
-      {/* KPIs Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      {/* KPIs Grid - Responsive Layout */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-6">
         {/* Socios Activos */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Socios Activos</span>
-            <Users size={24} className="text-blue-500" />
+        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-3 sm:mb-6">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Socios</span>
+            <Users size={18} className="sm:w-6 sm:h-6 text-blue-500" />
           </div>
-          <p className="text-4xl font-bold text-gray-900">{kpis.sociosActivos}</p>
+          <p className="text-2xl sm:text-4xl font-bold text-gray-900">{kpis.sociosActivos}</p>
         </div>
 
         {/* Próximos a Vencer */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Próximos 7 días</span>
-            <AlertCircle size={24} className="text-orange-500" />
+        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-3 sm:mb-6">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">7 días</span>
+            <AlertCircle size={18} className="sm:w-6 sm:h-6 text-orange-500" />
           </div>
-          <p className="text-4xl font-bold text-gray-900">{kpis.proxAVencer}</p>
+          <p className="text-2xl sm:text-4xl font-bold text-gray-900">{kpis.proxAVencer}</p>
         </div>
 
         {/* Vencidos */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
+        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-3 sm:mb-6">
             <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Vencidos</span>
-            <Calendar size={24} className="text-red-500" />
+            <Calendar size={18} className="sm:w-6 sm:h-6 text-red-500" />
           </div>
-          <p className="text-4xl font-bold text-gray-900">{kpis.vencidos}</p>
+          <p className="text-2xl sm:text-4xl font-bold text-gray-900">{kpis.vencidos}</p>
         </div>
 
         {/* Cobrado Hoy */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
+        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-3 sm:mb-6">
             <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Hoy</span>
-            <TrendingUp size={24} className="text-green-500" />
+            <TrendingUp size={18} className="sm:w-6 sm:h-6 text-green-500" />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{formatCurrency(kpis.cobradoHoy)}</p>
+          <p className="text-lg sm:text-2xl font-bold text-gray-900">{formatCurrency(kpis.cobradoHoy)}</p>
         </div>
 
         {/* Cobrado Este Mes */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Este mes</span>
-            <DollarSign size={24} className="text-purple-500" />
+        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-8 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-3 sm:mb-6">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Mes</span>
+            <DollarSign size={18} className="sm:w-6 sm:h-6 text-purple-500" />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{formatCurrency(kpis.cobradoMes)}</p>
+          <p className="text-lg sm:text-2xl font-bold text-gray-900">{formatCurrency(kpis.cobradoMes)}</p>
         </div>
       </div>
 
       {/* Próximos Vencimientos */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-8 py-6 border-b border-gray-200 flex items-center gap-3">
-          <Calendar size={24} className="text-gray-400" />
-          <h2 className="text-2xl font-bold text-gray-900">Próximos Vencimientos</h2>
+      <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200 flex items-center gap-3">
+          <Calendar size={20} className="sm:w-6 sm:h-6 text-gray-400" />
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Próximos vencimientos</h2>
         </div>
 
         {proximos.length === 0 ? (
-          <div className="p-16 text-center">
-            <TrendingUp size={48} className="mx-auto mb-4 text-green-500 opacity-50" />
-            <p className="text-lg font-semibold text-gray-900">Todo al día</p>
-            <p className="text-sm text-gray-600 mt-2">No hay socios próximos a vencer</p>
+          <div className="p-8 sm:p-16 text-center">
+            <TrendingUp size={40} className="sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 text-green-500 opacity-50" />
+            <p className="text-base sm:text-lg font-semibold text-gray-900">Todo al día</p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-1 sm:mt-2">No hay socios próximos a vencer</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
@@ -125,17 +125,16 @@ export default function InicioPage() {
               <Link
                 key={m.id}
                 href={`/socios/${m.socio.id}`}
-                className="px-8 py-5 hover:bg-gray-50/50 transition-colors flex items-center justify-between gap-4 group"
+                className="px-4 sm:px-8 py-4 sm:py-5 hover:bg-gray-50/50 transition-colors flex items-center justify-between gap-3 sm:gap-4 group"
               >
-                <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                   <Avatar nombre={m.socio.nombre} apellido={m.socio.apellido} size="md" />
-                  <div>
-                    <p className="font-semibold text-gray-900">{m.socio.nombre} {m.socio.apellido}</p>
-                    <p className="text-sm text-gray-600">Vence {formatDate(m.fechaVencimiento)}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{m.socio.nombre} {m.socio.apellido}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">Vence {formatDate(m.fechaVencimiento)}</p>
                   </div>
                 </div>
-                <StatusBadge status={getMembershipStatus(new Date(m.fechaVencimiento))} expirationDate={new Date(m.fechaVencimiento)} />
-                <div className="text-orange-600 group-hover:text-orange-700 font-semibold text-sm">→</div>
+                <div className="text-orange-600 group-hover:text-orange-700 font-semibold text-sm flex-shrink-0">→</div>
               </Link>
             ))}
           </div>
@@ -143,11 +142,11 @@ export default function InicioPage() {
       </div>
 
       {/* Acciones Rápidas */}
-      <div className="flex gap-4">
-        <Link href="/socios/nuevo" className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-all">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+        <Link href="/socios/nuevo" className="flex-1 px-4 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-all text-center text-sm sm:text-base">
           + Nuevo Socio
         </Link>
-        <Link href="/pagos/nuevo" className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all">
+        <Link href="/pagos/nuevo" className="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all text-center text-sm sm:text-base">
           Registrar Pago
         </Link>
       </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, UserPlus, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Search, UserPlus, ToggleLeft, ToggleRight, MoreVertical, ChevronRight } from 'lucide-react';
 import Avatar from '@/components/shared/Avatar';
 import StatusBadge from '@/components/shared/StatusBadge';
 import { getMembershipStatus, formatDate } from '@/lib/format';
@@ -74,41 +74,34 @@ export default function SociosPage() {
   };
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="space-y-4 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start sm:items-center justify-between gap-4 flex-col sm:flex-row">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900">Socios</h1>
-          <p className="text-gray-600 mt-1 font-medium">{socios.length} miembros en GUP</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Socios</h1>
+          <p className="text-gray-600 mt-1 font-medium text-sm sm:text-base">{socios.length} miembros en GUP</p>
         </div>
-        <Link href="/socios/nuevo" className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-all flex items-center gap-2">
-          <UserPlus size={20} /> Nuevo Socio
+        <Link href="/socios/nuevo" className="w-full sm:w-auto px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+          <UserPlus size={18} /> Nuevo Socio
         </Link>
       </div>
 
       {/* Búsqueda */}
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
         <input
           type="text"
           placeholder="Buscar socio..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-2.5 sm:py-3 bg-white border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm sm:text-base"
         />
       </div>
 
-      {/* Tabla / Lista */}
-      {isLoading ? (
-        <div className="text-center py-12 text-gray-600">Cargando...</div>
-      ) : socios.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-lg font-semibold text-gray-900">Sin resultados</p>
-          <p className="text-gray-600 mt-2">No hay socios que coincidan</p>
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="hidden md:block overflow-x-auto">
+      {/* Tabla Desktop */}
+      {!isLoading && socios.length > 0 && (
+        <div className="hidden sm:block bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                 <tr>
@@ -162,55 +155,63 @@ export default function SociosPage() {
               </tbody>
             </table>
           </div>
+        </div>
+      )}
 
-          {/* Mobile View */}
-          <div className="md:hidden space-y-4 p-6">
-            {socios.map((socio) => {
-              const membresia = socio.membresias?.[0];
-              const status = membresia ? getMembershipStatus(new Date(membresia.fechaVencimiento)) : 'no-membership';
-              return (
-                <div
-                  key={socio.id}
-                  className="p-4 bg-gray-50 rounded-lg border border-gray-200"
-                >
-                  <div className="flex items-start gap-4 mb-3">
-                    <Avatar nombre={socio.nombre} apellido={socio.apellido} size="md" />
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-900">{socio.nombre} {socio.apellido}</p>
-                      <p className="text-xs text-gray-600">{socio.email}</p>
-                      <p className="text-xs text-gray-600 mt-1">{socio.telefono || 'Sin teléfono'}</p>
-                      <div className="mt-3">
-                        <StatusBadge status={status} expirationDate={membresia ? new Date(membresia.fechaVencimiento) : null} />
-                      </div>
-                    </div>
+      {/* Mobile: Loading, Empty State, Cards */}
+      {isLoading ? (
+        <div className="sm:hidden text-center py-12 text-gray-600">Cargando...</div>
+      ) : socios.length === 0 ? (
+        <div className="sm:hidden text-center py-16">
+          <p className="text-lg font-semibold text-gray-900">Sin resultados</p>
+          <p className="text-gray-600 mt-2">No hay socios que coincidan</p>
+        </div>
+      ) : (
+        <div className="sm:hidden space-y-3">
+          {socios.map((socio) => {
+            const membresia = socio.membresias?.[0];
+            const status = membresia ? getMembershipStatus(new Date(membresia.fechaVencimiento)) : 'no-membership';
+            return (
+              <Link
+                key={socio.id}
+                href={`/socios/${socio.id}`}
+                className="block p-4 bg-white rounded-lg border border-gray-200 hover:border-orange-300 hover:shadow-md transition-all"
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <Avatar nombre={socio.nombre} apellido={socio.apellido} size="md" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-gray-900 text-sm">{socio.nombre} {socio.apellido}</p>
+                    <p className="text-xs text-gray-600">{socio.email}</p>
+                    {socio.telefono && <p className="text-xs text-gray-600">{socio.telefono}</p>}
                   </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => toggleSocioStatus(socio.id, socio.activo)}
-                      disabled={togglingId === socio.id}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
-                      title={socio.activo ? 'Desactivar socio' : 'Activar socio'}
-                    >
-                      {socio.activo ? (
-                        <>
-                          <ToggleRight size={16} className="text-green-600" />
-                          Desactivar
-                        </>
-                      ) : (
-                        <>
-                          <ToggleLeft size={16} className="text-gray-400" />
-                          Activar
-                        </>
-                      )}
-                    </button>
-                    <Link href={`/socios/${socio.id}`} className="flex-1 text-center px-3 py-2 text-orange-600 hover:text-orange-700 font-semibold text-sm rounded-lg hover:bg-gray-100 transition-colors">
-                      Ver
-                    </Link>
-                  </div>
+                  <ChevronRight size={18} className="text-gray-400 flex-shrink-0 mt-0.5" />
                 </div>
-              );
-            })}
-          </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <StatusBadge status={status} expirationDate={membresia ? new Date(membresia.fechaVencimiento) : null} />
+                    {membresia && <p className="text-xs text-gray-500 mt-1">Vence {formatDate(membresia.fechaVencimiento)}</p>}
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleSocioStatus(socio.id, socio.activo);
+                    }}
+                    disabled={togglingId === socio.id}
+                    className="flex-shrink-0 p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title={socio.activo ? 'Desactivar socio' : 'Activar socio'}
+                  >
+                    {socio.activo ? (
+                      <ToggleRight size={20} className="text-green-600" />
+                    ) : (
+                      <ToggleLeft size={20} className="text-gray-400" />
+                    )}
+                  </button>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
