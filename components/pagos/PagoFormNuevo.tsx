@@ -40,11 +40,12 @@ export default function PagoFormNuevo({
   const selectedSocio = socios.find((s) => s.id === socioId);
   const totalImporte = PRECIO_MENSUAL * meses;
 
+  // Solo recalcular importe cuando cambian los meses, no cuando cambia totalImporte
   useEffect(() => {
     if (!importeManualizado) {
       setImporte(totalImporte);
     }
-  }, [meses, importeManualizado, totalImporte]);
+  }, [meses]);
 
   useEffect(() => {
     const fetch_ = async () => {
