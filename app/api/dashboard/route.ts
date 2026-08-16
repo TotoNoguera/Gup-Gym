@@ -119,7 +119,11 @@ export async function GET(request: NextRequest) {
 
         return {
           id: membresia.id,
-          socio: membresia.socio.nombre,
+          socio: {
+            id: membresia.socio.id,
+            nombre: membresia.socio.nombre,
+            apellido: membresia.socio.apellido,
+          },
           plan: membresia.plan.nombre,
           fechaVencimiento: membresia.fechaVencimiento,
           diasRestantes,
