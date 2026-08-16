@@ -20,7 +20,7 @@ interface PagoFormNuevoProps {
   error: string | null;
 }
 
-const PRECIO_MENSUAL = 12000; // Valor por defecto
+const PRECIO_MENSUAL = 40000; // Valor por defecto
 
 export default function PagoFormNuevo({
   socioId: initialSocioId,
