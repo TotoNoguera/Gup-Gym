@@ -148,7 +148,7 @@ export default function PagoFormNuevo({
             value={socioId}
             onChange={(e) => setSocioId(e.target.value)}
             disabled={isLoading}
-            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900"
           >
             <option value="">Selecciona un socio</option>
             {socios.map((s) => (
@@ -175,7 +175,7 @@ export default function PagoFormNuevo({
               max="12"
               value={meses}
               onChange={(e) => setMeses(Math.min(12, Math.max(1, Number(e.target.value))))}
-              className="flex-1 px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900"
             />
             <button
               onClick={() => setMeses(Math.min(12, meses + 1))}
@@ -197,7 +197,7 @@ export default function PagoFormNuevo({
               setImporteManualizado(Number(e.target.value) !== totalImporte);
             }}
             disabled={isLoading}
-            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900"
           />
           <p className="text-sm text-gray-600 mt-2">Precio: {formatCurrency(PRECIO_MENSUAL)} × {meses} meses = {formatCurrency(totalImporte)}</p>
         </div>
@@ -210,7 +210,7 @@ export default function PagoFormNuevo({
             value={fechaPago}
             onChange={(e) => setFechaPago(e.target.value)}
             disabled={isLoading}
-            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900"
           />
         </div>
 
@@ -221,7 +221,7 @@ export default function PagoFormNuevo({
             value={metodo}
             onChange={(e) => setMetodo(e.target.value as any)}
             disabled={isLoading}
-            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-gray-900"
           >
             <option value="EFECTIVO">Efectivo</option>
             <option value="TRANSFERENCIA">Transferencia</option>
